@@ -916,9 +916,16 @@ static int mdp3_check_version(void)
 	}
 	/* A6501M-1903 add qcom patch(CR1028491) by xingbin for bootup without lcd end >*/
 
+	rc = mdp3_footswitch_ctrl(1);
+	if (rc) {
+		pr_err("unable to turn on FS\n");
+		return rc;
+	}
+
 	rc = mdp3_clk_update(MDP3_CLK_AHB, 1);
 	rc |= mdp3_clk_update(MDP3_CLK_AXI, 1);
 	rc |= mdp3_clk_update(MDP3_CLK_MDP_CORE, 1);
+
 	/*< A6501M-1903 add qcom patch(CR1028491) by xingbin for bootup without lcd begin*/
 	//if (rc)
 	//	return rc;
@@ -941,6 +948,10 @@ static int mdp3_check_version(void)
 		pr_err("unable to turn off FS\n");
 
 	/* A6501M-1903 add qcom patch(CR1028491) by xingbin for bootup without lcd end >*/
+	rc = mdp3_footswitch_ctrl(0);
+	if (rc)
+		pr_err("unable to turn off FS\n");
+
 	if (mdp3_res->mdp_rev != MDP_CORE_HW_VERSION) {
 		pr_err("mdp_hw_revision=%x mismatch\n", mdp3_res->mdp_rev);
 		rc = -ENODEV;
