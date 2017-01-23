@@ -1,6 +1,8 @@
- /*
- *odix Technology.
- * 
+/* drivers/input/touchscreen/goodix_tool.c
+ *
+ * 2010 - 2012 Goodix Technology.
+ * Copyright (c) 2013-2017, The Linux Foundation. All rights reserved.
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -451,7 +453,7 @@ Output:
 ssize_t goodix_tool_write(struct file *filp, const char __user *buff, size_t len, loff_t *off)
 {
     s32 ret = 0;
-    
+    u8 *dataptr = NULL;
     GTP_DEBUG_FUNC();
     GTP_DEBUG_ARRAY((u8*)buff, len);
     
@@ -585,10 +587,9 @@ ssize_t goodix_tool_write(struct file *filp, const char __user *buff, size_t len
             return -EPERM;
         }
     }
-
 #endif
 
-    return len;
+	return len;
 }
 
 /*******************************************************    
